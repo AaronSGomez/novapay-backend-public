@@ -1,5 +1,7 @@
 # 💳 NovaPay Backend — Hexagonal Architecture & Verifactu AEAT Integration
 
+🇺🇸 [Read in English](README.en.md) | 🇪🇸 **Español**
+
 [![Java Version](https://img.shields.io/badge/Java-21-orange.svg)](https://www.oracle.com/java/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.4.3-brightgreen.svg)](https://spring.io/projects/spring-boot)
 [![Architecture](https://img.shields.io/badge/Architecture-Hexagonal%20%2F%20Ports%20%26%20Adapters-blue.svg)](#arquitectura-del-sistema)
