@@ -1,0 +1,89 @@
+# ==============================================================================
+# GITIGNORE ROBUSTO - NOVAPAY BACKEND PUBLIC REPOSITORY
+# ==============================================================================
+
+# --- Archivos de Compilación y Artefactos Maven ---
+target/
+**/target/
+build/
+**/build/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# --- Certificados, Claves y Almacenes de Claves ---
+*.p12
+*.pfx
+*.jks
+*.key
+*.pem
+*.crt
+*.csr
+*.cer
+*.der
+*.kdb
+*.jceks
+cert_base64.txt
+certificado.p12
+
+# --- Variables de Entorno y Credenciales Locales ---
+.env
+.env.local
+.env.development
+.env.production
+.env.staging
+.env.*
+!.env.example
+!.env.server.example
+application-local.yml
+application-local.properties
+application-dev.yml
+application-prod.yml
+
+# --- Archivos Temporales y Logs de Ejecución / Pruebas ---
+*.log
+logs/
+**/logs/
+last_sent.xml
+last_response.xml
+*.tmp
+*.bak
+*.swp
+
+# --- IDEs y Editores de Código ---
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# VS Code
+.vscode/
+.history/
+
+# Eclipse / STS
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# --- Sistema Operativo y Metadatos ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini

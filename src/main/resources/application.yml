@@ -1,0 +1,55 @@
+# ─── Configuración del Servidor y Proxy ──────────────────────────────────────
+server:
+  # Habilita el manejo correcto de cabeceras X-Forwarded-* en proxies como Nginx o Cloudflare
+  forward-headers-strategy: framework
+  port: ${PORT:8080}
+
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:novapay_db}
+    username: ${DB_USER:novapay_user}
+    password: ${DB_PASSWORD:novapay_pass}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+# ─── Seguridad JWT ───────────────────────────────────────────────────────────
+security:
+  jwt:
+    secret: ${JWT_SECRET:dGhpc2lzYWZha2VzZWNyZXRrZXlmb3JkZXZlbG9wbWVudG9ubHkxMjM0NTY3ODkw}
+    expiration-minutes: ${JWT_EXPIRATION_MIN:60}
+
+  certificate:
+    p12-base64: ${CERT_P12_BASE64:}
+    password: ${CERT_PASSWORD:changeit}
+    alias: ${CERT_ALIAS:test-alias}
+    signing-enabled: ${CERT_SIGNING_ENABLED:false}
+
+# ─── Verifactu AEAT ──────────────────────────────────────────────────────────
+fiscal:
+  verifactu:
+    endpoint-url: ${VERIFACTU_ENDPOINT_URL:https://prewww1.aeat.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP}
+    soap-action: ${VERIFACTU_SOAP_ACTION:RegFactuSistemaFacturacion}
+    certificate-alias: ${CERT_ALIAS:test-alias}
+    timeout: ${VERIFACTU_TIMEOUT:30s}
+    max-retries: ${VERIFACTU_MAX_RETRIES:3}
+    production-environment: ${VERIFACTU_PRODUCTION:false}
+
+# ─── Logging ─────────────────────────────────────────────────────────────────
+logging:
+  level:
+    levelup42.novapay_backend_hex: INFO
+    org.springframework.security: INFO
+    org.hibernate.SQL: INFO

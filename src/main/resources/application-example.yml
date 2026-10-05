@@ -1,0 +1,66 @@
+# ==============================================================================
+# ARCHIVO DE CONFIGURACIÓN DE EJEMPLO PARA ENTORNOS DE DESARROLLO / PRODUCCIÓN
+# NOVAPAY Backend Hexagonal Architecture - Verifactu AEAT
+# ==============================================================================
+# Copie este archivo como application-local.yml o configure las variables
+# de entorno correspondientes en su servidor o archivo .env.
+
+server:
+  port: 8080
+  forward-headers-strategy: framework # Permite operar tras Nginx / Reverse Proxy
+
+spring:
+  datasource:
+    # URL de conexión a la base de datos PostgreSQL
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:novapay_db}
+    username: ${DB_USER:novapay_user}
+    password: ${DB_PASSWORD:novapay_pass}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate # Estrategia Hibernate ddl (validate en prod/dev seguro)
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+# ─── Seguridad JWT ───────────────────────────────────────────────────────────
+security:
+  jwt:
+    # Clave secreta para la firma de tokens JWT (HS256). Debe tener al menos 256 bits (32 caracteres o Base64 equivalentes)
+    secret: ${JWT_SECRET:dGhpc2lzYWZha2VzZWNyZXRrZXlmb3JkZXZlbG9wbWVudG9ubHkxMjM0NTY3ODkw}
+    expiration-minutes: ${JWT_EXPIRATION_MIN:60}
+
+  certificate:
+    # Contenido del archivo .p12 codificado en Base64 para entornos serverless/Docker
+    p12-base64: ${CERT_P12_BASE64:MIIJ...EXAMPLE_BASE64...==}
+    # Contraseña del certificado digital PKCS#12
+    password: ${CERT_PASSWORD:changeit}
+    # Alias del certificado dentro del keystore .p12
+    alias: ${CERT_ALIAS:test-alias}
+    # Flag para habilitar la firma digital activa en XMLs de Verifactu
+    signing-enabled: ${CERT_SIGNING_ENABLED:false}
+
+# ─── Verifactu AEAT ──────────────────────────────────────────────────────────
+fiscal:
+  verifactu:
+    # Endpoint SOAP de AEAT (Pre-producción / Pruebas por defecto)
+    endpoint-url: ${VERIFACTU_ENDPOINT_URL:https://prewww1.aeat.es/wlpl/TIKE-CONT/ws/SistemaFacturacion/VerifactuSOAP}
+    soap-action: ${VERIFACTU_SOAP_ACTION:RegFactuSistemaFacturacion}
+    certificate-alias: ${CERT_ALIAS:test-alias}
+    timeout: ${VERIFACTU_TIMEOUT:30s}
+    max-retries: ${VERIFACTU_MAX_RETRIES:3}
+    # Indicar si es entorno real de producción de AEAT (true) o entorno de pruebas (false)
+    production-environment: ${VERIFACTU_PRODUCTION:false}
+
+# ─── Nivel de Logs ───────────────────────────────────────────────────────────
+logging:
+  level:
+    levelup42.novapay_backend_hex: DEBUG
+    org.springframework.security: INFO
+    org.hibernate.SQL: INFO

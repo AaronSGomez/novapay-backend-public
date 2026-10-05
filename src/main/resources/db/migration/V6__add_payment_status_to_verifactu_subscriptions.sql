@@ -1,0 +1,2 @@
+ALTER TABLE verifactu_subscriptions
+    ADD COLUMN IF NOT EXISTS payment_status VARCHAR(30) NOT NULL DEFAULT 'AL_CORRIENTE';
